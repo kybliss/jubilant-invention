@@ -37,38 +37,34 @@ var Questions = [{
  
 ]
  
-let currentQuestion = 0
-let score = 0
+let currentQuestion = 0;
+let score = 0;
+var fetchButton = document.getElementById('btn');
+
  
 function loadQues() {
+    
     const question = document.getElementById("ques");
     const opt = document.getElementById("opt");
- 
+    const opener = document.querySelector(".opener");
+
+    fetchButton.style.display = "none";
+
     question.textContent = Questions[currentQuestion].q;
-    opt.innerHTML = ""
- 
+    opener.innerHTML = "";
+    opt.innerHTML = "";
     for (let i = 0; i < Questions[currentQuestion].a.length; i++) {
-        const choicesdiv = document.createElement("div");
-        const choice = document.createElement("input");
-        const choiceLabel = document.createElement("label");
+        const choiceButton = document.createElement("button");
+        choiceButton.addEventListener("click", nextQuestion)
  
-        choice.type = "radio";
-        choice.name = "answer";
-        choice.value = i;
- 
-        choiceLabel.textContent = Questions[currentQuestion].a[i].text;
- 
-        choicesdiv.appendChild(choice);
-        choicesdiv.appendChild(choiceLabel);
-        opt.appendChild(choicesdiv);
+        choiceButton.textContent = Questions[currentQuestion].a[i].text;
+        opt.appendChild(choiceButton);
     }
 }
  
-loadQues();
- 
 function loadScore() {
-    const totalScore = document.getElementById("score")
-    totalScore.textContent = `You scored ${score} out of ${Questions.length}`
+    const totalScore = document.getElementById("score");
+    totalScore.textContent = `Your final score is ${score}.`;
 }
  
  
@@ -84,7 +80,8 @@ function nextQuestion() {
     }
 }
  
-function checkAns() {
+function checkAnswer() {
+
     const selectedAns = parseInt(document.querySelector('input[name="answer"]:checked').value);
  
     if (Questions[currentQuestion].a[selectedAns].isCorrect) {
@@ -95,3 +92,5 @@ function checkAns() {
         nextQuestion();
     }
 }
+
+fetchButton.addEventListener("click", loadQues);
